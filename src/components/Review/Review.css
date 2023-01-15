@@ -1,0 +1,32 @@
+.info-display-container {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 18px;
+}
+
+.info-display-row {
+  width: 100%;
+	display: flex;
+  padding: 10px;
+}
+
+.info-display-label {
+  font-weight: bold;
+  width: 25%;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.info-display-value {
+  width: 75%;
+}
+
+.info-display-dishes {
+	border: 1px solid #343434;
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+}
+
+.info-display-dishes > div {
+  padding: 5px;
+}
