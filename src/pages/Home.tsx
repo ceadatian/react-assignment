@@ -51,11 +51,6 @@ const Home: React.FC<Props> = ({ availableDishes }) => {
     setSelectedMeal(mealCategory);
     setSelectedPeople(numberOfPeople);
     const filterRestaurant = filterByMeal(availableDishes, mealCategory);
-    console.log(
-      "%c Line:42 🍷 filterRestaurant",
-      "color:#33a5ff",
-      filterRestaurant
-    );
     setFilterRestaurant(filterRestaurant);
     setCurrentStep(2);
   };

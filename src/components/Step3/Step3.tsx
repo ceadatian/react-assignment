@@ -56,11 +56,6 @@ const Step3: React.FC<Props> = ({
     const selectedDishObject = availableDishesForSelection.find(
       (dish) => dish.name === selectedDish
     );
-    // console.log(
-    //   "%c Line:53 🍰 selectedDishObject",
-    //   "color:#f5ce50",
-    //   selectedDishObject
-    // );
     const newSelectedDishes = [...selectedDishes];
     newSelectedDishes[idx].id = selectedDishObject?.id || -1;
     newSelectedDishes[idx].name = selectedDish;
@@ -102,7 +97,6 @@ const Step3: React.FC<Props> = ({
       servings += i.servings;
     });
     setTotalServings(servings);
-    console.log(totalServings);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
