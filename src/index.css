@@ -1,14 +1,14 @@
+
 .global-label {
   color: rgb(83, 83, 83);
-  font-size: 14px;
-  margin-right: 10px;
+  /* font-size: 14px; */
+  /* margin-right: 10px; */
 }
 .global-step {
-  padding: 20px;
+  padding: 40px 20px;
 }
 
 .global-previous {
-  margin-top: 10px;
   margin-right: 10px;
 }
 

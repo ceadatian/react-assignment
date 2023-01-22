@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import { Descriptions, Button } from "antd";
 import "./Review.css"
 
 interface Dish {
@@ -52,38 +53,62 @@ const Review: React.FC<Props> = ({
     });
     onSubmit();
   };
+  // const dishes = selectedDishes.map((dish, idx) => (
+  //   <div key={idx}>
+  //     {dish.name} - {dish.servings}
+  //   </div>
+  // ))
+    
   return (
-    <div className="info-display-container">
-      <div className="info-display-row">
-        <div className="info-display-label">Meal:</div>
-        <div className="info-display-value">{selectedMeal}</div>
-      </div>
-      <div className="info-display-row">
-        <div className="info-display-label">No. of People:</div>
-        <div className="info-display-value">{selectedPeople}</div>
-      </div>
-      <div className="info-display-row">
-        <div className="info-display-label">Restaurant:</div>
-        <div className="info-display-value">{selectedRestaurant?.restaurant || ''}</div>
-      </div>
-      <div className="info-display-row">
-        <div className="info-display-label">Dishes:</div>
-        <div className="info-display-dishes">
+    <div className='global-step'>
+      <Descriptions title="Review" bordered>
+        <Descriptions.Item label="Meal">{selectedMeal}</Descriptions.Item>
+        <Descriptions.Item label="No. of People">{selectedPeople}</Descriptions.Item>
+        <Descriptions.Item label="Restaurant">{selectedRestaurant?.restaurant || ''}</Descriptions.Item>
+        <Descriptions.Item label="Dishes">
           {selectedDishes.map((dish, idx) => (
             <div key={idx}>
               {dish.name} - {dish.servings}
             </div>
           ))}
-        </div>
+        </Descriptions.Item>
+      </Descriptions>
+      <div className="review-bottom">
+        <Button className="global-previous" onClick={onBack}>Previous</Button>
+        <Button type="primary" onClick={Submit}>Submit</Button>
       </div>
-      <br />
-      <button className="global-previous review-previous" type="button" onClick={onBack}>
-        Previous
-      </button>
-      <button className="global-previous review-submit"  type="submit" onClick={Submit}>
-        Submit
-      </button>
     </div>
+    // <div className="info-display-container">
+    //   <div className="info-display-row">
+    //     <div className="info-display-label">Meal:</div>
+    //     <div className="info-display-value">{selectedMeal}</div>
+    //   </div>
+    //   <div className="info-display-row">
+    //     <div className="info-display-label">No. of People:</div>
+    //     <div className="info-display-value">{selectedPeople}</div>
+    //   </div>
+    //   <div className="info-display-row">
+    //     <div className="info-display-label">Restaurant:</div>
+    //     <div className="info-display-value">{selectedRestaurant?.restaurant || ''}</div>
+    //   </div>
+    //   <div className="info-display-row">
+    //     <div className="info-display-label">Dishes:</div>
+    //     <div className="info-display-dishes">
+    //       {selectedDishes.map((dish, idx) => (
+    //         <div key={idx}>
+    //           {dish.name} - {dish.servings}
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </div>
+    //   <br />
+    //   <button className="global-previous review-previous" type="button" onClick={onBack}>
+    //     Previous
+    //   </button>
+    //   <button className="global-previous review-submit"  type="submit" onClick={Submit}>
+    //     Submit
+    //   </button>
+    // </div>
   );
 };
 export default Review;

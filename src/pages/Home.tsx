@@ -3,7 +3,8 @@ import Step1 from "../components/Step1/Step1";
 import Step2 from "../components/Step2/Step2";
 import Step3 from "../components/Step3/Step3";
 import Review from "../components/Review/Review";
-import ProgressBar from "../components/ProgressBar/ProgressBar";
+// import ProgressBar from "../components/ProgressBar/ProgressBar";
+import { Steps } from 'antd';
 import "./Home.css";
 import { filterByMeal } from "../utils/utils";
 
@@ -35,7 +36,7 @@ interface MeadPerson {
 }
 
 const Home: React.FC<Props> = ({ availableDishes }) => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState<string>("breakfast");
   const [selectedPeople, setSelectedPeople] = useState<number>(0);
   const [filterRestaurant, setFilterRestaurant] = useState<Dish[]>([]);
@@ -52,7 +53,7 @@ const Home: React.FC<Props> = ({ availableDishes }) => {
     setSelectedPeople(numberOfPeople);
     const filterRestaurant = filterByMeal(availableDishes, mealCategory);
     setFilterRestaurant(filterRestaurant);
-    setCurrentStep(2);
+    setCurrentStep(1);
   };
   // step 2
   const handleRestaurantSelection = (selectedRestaurant: Dish) => {
@@ -71,16 +72,16 @@ const Home: React.FC<Props> = ({ availableDishes }) => {
         };
       });
     setAvailableDishesForSelection(availableDishesForSelection);
-    setCurrentStep(3);
+    setCurrentStep(2);
   };
   // step 3
   const handleDishSelection = (selectedDishes: SelectedDishes[]) => {
     setSelectedDishes(selectedDishes);
-    setCurrentStep(4);
+    setCurrentStep(3);
   };
 
   const handleBack = () => {
-    if (currentStep === 1) {
+    if (currentStep === 0) {
       return;
     }
     setCurrentStep(currentStep - 1);
@@ -91,18 +92,35 @@ const Home: React.FC<Props> = ({ availableDishes }) => {
 
   return (
     <div className="home">
-      <ProgressBar currentStep={currentStep} totalSteps={4} />
-      <div className={currentStep === 1 ? "visible" : "hidden"}>
+      <Steps
+        current={currentStep}
+        items={[
+          {
+            title: 'Step 1',
+          },
+          {
+            title: 'Step 2',
+          },
+          {
+            title: 'Step 3',
+          },
+          {
+            title: 'Review',
+          },
+        ]}
+      />
+      {/* <ProgressBar currentStep={currentStep} totalSteps={4} /> */}
+      <div className={currentStep === 0 ? "visible" : "hidden"}>
         <Step1 onSubmit={handleMealPersonSelection} />
       </div>
-      <div className={currentStep === 2 ? "visible" : "hidden"}>
+      <div className={currentStep === 1 ? "visible" : "hidden"}>
         <Step2
           availableRestaurants={filterRestaurant}
           onSubmit={handleRestaurantSelection}
           onBack={handleBack}
         />
       </div>
-      <div className={currentStep === 3 ? "visible" : "hidden"}>
+      <div className={currentStep === 2 ? "visible" : "hidden"}>
         <Step3
           availableDishesForSelection={availableDishesForSelection}
           selectedMeal={selectedMeal}
@@ -112,7 +130,7 @@ const Home: React.FC<Props> = ({ availableDishes }) => {
           onBack={handleBack}
         />
       </div>
-      <div className={currentStep === 4 ? "visible" : "hidden"}>
+      <div className={currentStep === 3 ? "visible" : "hidden"}>
         <Review
           selectedMeal={selectedMeal}
           selectedPeople={selectedPeople}

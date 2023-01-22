@@ -122,7 +122,7 @@ export const dishes = [
   // todo 为什么有两家一样的餐厅
   {
     id: 21,
-    name: "Pepperoni Pizza",
+    name: "Pepperon Pizza",
     restaurant: "Pizzeria",
     availableMeals: ["lunch", "dinner"],
   },

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Form, Select, InputNumber, Button, Col, Tooltip, Row} from 'antd';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import "./Step3.css"
 
 interface Props {
@@ -32,56 +34,48 @@ const Step3: React.FC<Props> = ({
   onBack,
 }) => {
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
-  const [totalServings, setTotalServings] = useState(0);
+  const [totalServings, setTotalServings] = useState(1);
   useEffect(() => {
+    console.log('%cMyProject%cline:39%cavailableDishesForSelection', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px', availableDishesForSelection)
     if (availableDishesForSelection.length > 0) {
       setSelectedDishes([
         {
           id: availableDishesForSelection[0].id,
           name: availableDishesForSelection[0].name,
-          servings: 0,
+          servings: 1,
         },
       ]);
     }
   }, [availableDishesForSelection]);
-  // useEffect(() => {
-  //   setTotalServings(minServings);
-  // }, [minServings]);
-
-  const handleSelectChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-    idx: number
-  ) => {
-    const selectedDish = event.target.value;
+ 
+  const handleSelectChange = (value: string, idx: number) => {
     const selectedDishObject = availableDishesForSelection.find(
-      (dish) => dish.name === selectedDish
+      (dish) => dish.name === value
     );
     const newSelectedDishes = [...selectedDishes];
     newSelectedDishes[idx].id = selectedDishObject?.id || -1;
-    newSelectedDishes[idx].name = selectedDish;
+    newSelectedDishes[idx].name = value;
     setSelectedDishes(newSelectedDishes);
-
-    // const newAvailableDishes = availableDishesForSelection.filter(
-    //   (dish) => dish.name !== selectedDish
-    // );
-    // setLeftDishes(newAvailableDishes);
   };
 
-  const handleServingsChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
-    const newServings = Number(event.target.value);
+  const handleServingsChange = (value: number | null, idx: number) => {
     const newSelectedDishes = [...selectedDishes];
-    newSelectedDishes[idx].servings = newServings;
+    newSelectedDishes[idx].servings = value || 0;
     setSelectedDishes(newSelectedDishes);
     setTotalServings(
       selectedDishes.reduce((acc, dish) => acc + dish.servings, 0)
     );
   };
 
+
   const handleAddClick = () => {
-    setSelectedDishes([...selectedDishes, { id: 0, name: "", servings: 0 }]);
+    const newSelectedDishes = [...selectedDishes, { id: 0, name: "", servings: 1 }];
+    setSelectedDishes(newSelectedDishes);
+    let servings = 0;
+    newSelectedDishes.forEach((i) => {
+      servings += i.servings;
+    });
+    setTotalServings(servings);
   };
 
   const handleRemoveClick = (idx: number) => {
@@ -91,7 +85,6 @@ const Step3: React.FC<Props> = ({
       ...selectedDishes.slice(idx + 1),
     ];
     setSelectedDishes(newSelectedDishes);
-    // setLeftDishes([...leftDishes, removedDish]);
     let servings = 0;
     newSelectedDishes.forEach((i) => {
       servings += i.servings;
@@ -100,91 +93,100 @@ const Step3: React.FC<Props> = ({
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     onSubmit(selectedDishes);
   };
 
   const renderSelect = (dish: SelectedDish, idx: number) => (
     <div key={idx}>
-      <label className="global-label">
-        Select Dish:
-        <select
-          value={dish.name}
-          onChange={(event) => handleSelectChange(event, idx)}
-        >
-          <option value="">please select a dish</option>
-          {availableDishesForSelection.map((dish, idx) => (
-            <option
-              key={dish.id}
-              value={dish.name}
-              disabled={selectedDishes.some(
-                (selectedDish) => selectedDish.name === dish.name
-              )}
-            >
-              {dish.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="global-label">
-        Select no. of Servings
-        <input
-          type="number"
-          min={1}
-          max={10}
-          value={dish.servings}
-          onChange={(event) => handleServingsChange(event, idx)}
-        />
-      </label>
-      {
-        selectedDishes.length > 1 && (
-          <button onClick={() => handleRemoveClick(idx)}>Remove</button>
-        )
-      }
+      <Form.Item>
+        <Row gutter={16}>
+          <Col className="gutter-row" span={8}>
+            <label className="global-label">
+              Select Dish:
+              <Select
+                onChange={(value) => handleSelectChange(value, idx)}
+                value={dish.name}
+              >
+                <Select.Option value="">please select a dish</Select.Option>
+                {availableDishesForSelection.map((Adish, idx) => (
+                  <Select.Option
+                    key={Adish.id}
+                    value={Adish.name}
+                    disabled={selectedDishes.some(
+                      (selectedDish) => selectedDish.name === Adish.name
+                    )}
+                  >
+                    {Adish.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </label>
+          </Col>
+          <Col className="gutter-row" span={5}>
+            <label className="global-label">
+              Select Servings:
+              <InputNumber
+                type="number"
+                style={{ width: '130px' }}
+                min={1}
+                max={10}
+                value={dish.servings}
+                onChange={(value) => handleServingsChange(value, idx)}
+              />
+            </label>
+          </Col>
+          <Col className="gutter-row" span={3}>
+            {
+              selectedDishes.length > 1 && (
+                <div className="remove-padding">
+                  <Button icon={<DeleteOutlined />} onClick={() => handleRemoveClick(idx)}></Button>
+                </div>
+              )
+            }
+          </Col>
+        </Row>
+      </Form.Item>
     </div>
   );
 
   return (
-    <form className="global-step" onSubmit={handleSubmit}>
-      <h3>
+    <Form className="global-step step3" onFinish={handleSubmit}>
+      <h3 className="step3-h3">
         Select dishes for {selectedMeal} at {selectedRestaurant?.restaurant}:
       </h3>
       <div>
         {selectedDishes.map((dish, idx) => renderSelect(dish, idx))}
-        <br />
-
-        <button
+        <Button
+          icon={<PlusOutlined />}
           disabled={selectedDishes.length >= availableDishesForSelection.length}
           onClick={handleAddClick}
         >
           Add Dish
-        </button>
+        </Button>
       </div>
-      <br />
-      <br />
-      <br />
-      <p>
-      The total number of dishes should be greater or equal to the number of people selected and maximum of 10
-      </p>
-      <p>
-        Total Servings:{" "}
-        <span
-          className={
-            totalServings < minServings || totalServings > 10
-              ? "global-warn"
-              : ""
-          }
+      <p className="step3-text">
+        <Tooltip
+          title="The total number of dishes should be greater or equal to the number of people selected and maximum of 10"
         >
-          {totalServings}
-        </span>
-        / Min: {minServings} / Max: 10
+          <span>Total Servings:{" "}</span>
+          <span
+            className={
+              totalServings < minServings || totalServings > 10
+                ? "global-warn"
+                : ""
+            }
+          >
+            {totalServings}
+          </span>
+          <span>/ Min: {minServings} / Max: 10</span>
+        </Tooltip>
       </p>
-      <br />
-      <button className="global-previous" type="button" onClick={onBack}>
+      <Button className="global-previous" onClick={onBack}>
         Previous
-      </button>
-      <button
-        type="submit"
+      </Button>
+      <Button
+        htmlType="submit"
+        type="primary"
         disabled={
           totalServings < minServings ||
           totalServings > 10 ||
@@ -192,8 +194,8 @@ const Step3: React.FC<Props> = ({
         }
       >
         Next
-      </button>
-    </form>
+      </Button>
+      </Form>
   );
 };
 

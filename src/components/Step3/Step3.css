@@ -1,3 +1,13 @@
-.remove {
-	margin: 0 10px;
+.remove-padding {
+	padding-top: 21px;
+}
+.step3-text {
+	padding-top: 45px;
+}
+.step3 :where(.css-dev-only-do-not-override-1n7nwfa).ant-form-item {
+	margin-bottom: 6px;
+}
+
+.step3-h3 {
+	padding-bottom: 10px;
 }

@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import { Form, Select, Button } from 'antd';
 import './Step2.css'
 
 interface Props {
@@ -23,8 +24,15 @@ interface Restaurant {
 const Step2: React.FC<Props> = ({ availableRestaurants, onSubmit, onBack }) => {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | undefined>();
 
-	const handleRestaurantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedRestaurantId = event.target.value;
+	// const handleRestaurantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const selectedRestaurantId = event.target.value;
+  //   const selectedRestaurant = availableRestaurants.find(
+  //     (restaurant) => restaurant.id === +selectedRestaurantId
+  //   );
+  //   setSelectedRestaurant(selectedRestaurant);
+  // };
+  const handleRestaurantChange = (value: string) => {
+    const selectedRestaurantId = value;
     const selectedRestaurant = availableRestaurants.find(
       (restaurant) => restaurant.id === +selectedRestaurantId
     );
@@ -32,7 +40,7 @@ const Step2: React.FC<Props> = ({ availableRestaurants, onSubmit, onBack }) => {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    // event.preventDefault();
     if (selectedRestaurant) {
       onSubmit(selectedRestaurant);
     }
@@ -41,26 +49,22 @@ const Step2: React.FC<Props> = ({ availableRestaurants, onSubmit, onBack }) => {
   const uniqueRestaurants = availableRestaurants.filter((item, index, self) => self.map(i => i.restaurant).indexOf(item.restaurant) === index);
 
   return (
-    <form className='global-step' onSubmit={handleSubmit}>
-      <label className='global-label'>
-				Please Select a Restaurant:
-        <select value={selectedRestaurant?.id || ''} onChange={handleRestaurantChange}>
-          <option value="">Please Select a Restaurant</option>
+    <Form className='global-step' onFinish={handleSubmit}>
+      <Form.Item label="Please Select a Restaurant:" name="selectedRestaurantId" style={{ width: '400px'}}>
+        <Select onChange={handleRestaurantChange}>
+          <Select.Option value="">Please Select a Restaurant</Select.Option>
           {uniqueRestaurants.map((restaurant) => (
-            <option key={restaurant.id} value={restaurant.id}>
+            <Select.Option key={restaurant.id} value={restaurant.id}>
               {restaurant.restaurant}
-            </option>
+            </Select.Option>
           ))}
-        </select>
-      </label>
-      <br />
-			<button className="global-previous" type="button" onClick={onBack}>
-        Previous
-      </button>
-      <button type="submit" disabled={!selectedRestaurant}>
-        Next
-      </button>
-    </form>
+        </Select>
+      </Form.Item>
+			<Form.Item>
+        <Button className='global-previous' onClick={onBack}>Previous</Button>
+        <Button type="primary" htmlType="submit" disabled={!selectedRestaurant}>Next</Button>
+      </Form.Item>
+    </Form>
   );
 };
 
