@@ -53,11 +53,6 @@ const Review: React.FC<Props> = ({
     });
     onSubmit();
   };
-  // const dishes = selectedDishes.map((dish, idx) => (
-  //   <div key={idx}>
-  //     {dish.name} - {dish.servings}
-  //   </div>
-  // ))
     
   return (
     <div className='global-step'>
@@ -78,37 +73,6 @@ const Review: React.FC<Props> = ({
         <Button type="primary" onClick={Submit}>Submit</Button>
       </div>
     </div>
-    // <div className="info-display-container">
-    //   <div className="info-display-row">
-    //     <div className="info-display-label">Meal:</div>
-    //     <div className="info-display-value">{selectedMeal}</div>
-    //   </div>
-    //   <div className="info-display-row">
-    //     <div className="info-display-label">No. of People:</div>
-    //     <div className="info-display-value">{selectedPeople}</div>
-    //   </div>
-    //   <div className="info-display-row">
-    //     <div className="info-display-label">Restaurant:</div>
-    //     <div className="info-display-value">{selectedRestaurant?.restaurant || ''}</div>
-    //   </div>
-    //   <div className="info-display-row">
-    //     <div className="info-display-label">Dishes:</div>
-    //     <div className="info-display-dishes">
-    //       {selectedDishes.map((dish, idx) => (
-    //         <div key={idx}>
-    //           {dish.name} - {dish.servings}
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </div>
-    //   <br />
-    //   <button className="global-previous review-previous" type="button" onClick={onBack}>
-    //     Previous
-    //   </button>
-    //   <button className="global-previous review-submit"  type="submit" onClick={Submit}>
-    //     Submit
-    //   </button>
-    // </div>
   );
 };
 export default Review;

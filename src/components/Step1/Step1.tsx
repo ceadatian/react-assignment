@@ -17,14 +17,6 @@ const Step1: React.FC<Props> = ({ onSubmit }) => {
   const [mealCategory, setMealCategory] = useState<string>('breakfast');
   const [numberOfPeople, setNumberOfPeople] = useState<number>(0);
 
-  // const handleMealCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setMealCategory(event.target.value);
-  // };
-
-  // const handleNumberOfPeopleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setNumberOfPeople(Number(event.target.value));
-  // };
-
   const handleNumberOfPeopleChange = (value: number | null) => {
     if (value !== null) {
       setNumberOfPeople(value);
@@ -37,13 +29,13 @@ const Step1: React.FC<Props> = ({ onSubmit }) => {
   };
 
   return (
-    <Form className='global-step' onFinish={handleSubmit}>
+    <Form className='global-step' id='ant-form1' onFinish={handleSubmit}>
       <Form.Item
         rules={[{ required: true, message: 'Please Select a meal' }]}
         label="Please Select a meal:"
         style={{ width: '300px'}}
       >
-        <Select value={mealCategory} onChange={setMealCategory}>
+        <Select id='ant-select' value={mealCategory} onChange={setMealCategory}>
           <Select.Option value="breakfast">Breakfast</Select.Option>
           <Select.Option value="lunch">Lunch</Select.Option>
           <Select.Option value="dinner">Dinner</Select.Option>

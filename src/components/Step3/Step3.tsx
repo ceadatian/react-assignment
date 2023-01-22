@@ -36,7 +36,6 @@ const Step3: React.FC<Props> = ({
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
   const [totalServings, setTotalServings] = useState(1);
   useEffect(() => {
-    console.log('%cMyProject%cline:39%cavailableDishesForSelection', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px', availableDishesForSelection)
     if (availableDishesForSelection.length > 0) {
       setSelectedDishes([
         {

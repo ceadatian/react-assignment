@@ -49,9 +49,9 @@ const Step2: React.FC<Props> = ({ availableRestaurants, onSubmit, onBack }) => {
   const uniqueRestaurants = availableRestaurants.filter((item, index, self) => self.map(i => i.restaurant).indexOf(item.restaurant) === index);
 
   return (
-    <Form className='global-step' onFinish={handleSubmit}>
+    <Form className='global-step' onFinish={handleSubmit} id='ant-form2'>
       <Form.Item label="Please Select a Restaurant:" name="selectedRestaurantId" style={{ width: '400px'}}>
-        <Select onChange={handleRestaurantChange}>
+        <Select onChange={handleRestaurantChange} id='ant-select2'>
           <Select.Option value="">Please Select a Restaurant</Select.Option>
           {uniqueRestaurants.map((restaurant) => (
             <Select.Option key={restaurant.id} value={restaurant.id}>

@@ -1,31 +1,52 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, configure } from "enzyme";
+import Adapter from 'enzyme-adapter-react-16';
 import Step1 from "../src/components/Step1/Step1";
 
-describe("Step1 component", () => {
-  it("renders correctly", () => {
-    const wrapper = shallow(<Step1 onSubmit={() => {}} />);
-    expect(wrapper).toMatchSnapshot();
+configure({ adapter: new Adapter() });
+describe('Step1 component', () => {
+  let wrapper;
+  const mockOnSubmit = jest.fn();
+
+  beforeEach(() => {
+    wrapper = shallow(<Step1 onSubmit={mockOnSubmit} />);
   });
 
-  it("should call onSubmit function with correct arguments when form is submitted", () => {
-    const onSubmit = jest.fn();
-    const wrapper = shallow(<Step1 onSubmit={onSubmit} />);
-    wrapper.find("select").simulate("change", { target: { value: "lunch" } });
-    wrapper.find("input").simulate("change", { target: { value: "5" } });
-    wrapper.find("form").simulate("submit", { preventDefault: () => {} });
-
-    expect(onSubmit).toHaveBeenCalledWith("lunch", 5);
+  it('renders without crashing', () => {
+    expect(wrapper).toBeTruthy();
   });
 
-  it("should disable the submit button when meal category or number of people is not selected", () => {
-    const wrapper = shallow(<Step1 onSubmit={() => {}} />);
-    expect(wrapper.find("button").prop("disabled")).toBe(true);
+  it('renders a Select component', () => {
+    expect(wrapper.find('#ant-select')).toHaveLength(1);
+  });
 
-    wrapper.find("select").simulate("change", { target: { value: "lunch" } });
-    expect(wrapper.find("button").prop("disabled")).toBe(true);
+  it('renders a InputNumber component', () => {
+    expect(wrapper.find('InputNumber')).toHaveLength(1);
+  });
 
-    wrapper.find("input").simulate("change", { target: { value: "5" } });
-    expect(wrapper.find("button").prop("disabled")).toBe(false);
+  it('renders a Button component', () => {
+    expect(wrapper.find('Button')).toHaveLength(1);
+  });
+
+  it('calls the onSubmit function when the form is submitted', () => {
+    wrapper.find('#ant-form1').simulate('finish');
+    expect(mockOnSubmit).toHaveBeenCalled();
+  });
+
+  it('calls the onSubmit function with the correct arguments', () => {
+    wrapper.find('#ant-select').simulate('change', 'lunch');
+    wrapper.find('InputNumber').simulate('change', 5);
+    wrapper.find('#ant-form1').simulate('finish');
+    expect(mockOnSubmit).toHaveBeenCalledWith('lunch', 5);
+  });
+
+  it('disables the button when the form is not filled out', () => {
+    expect(wrapper.find('Button').prop('disabled')).toBeTruthy();
+  });
+
+  it('enables the button when the form is filled out', () => {
+    wrapper.find('#ant-select').simulate('change', { target: { value: 'lunch' } });
+    wrapper.find('InputNumber').simulate('change', { target: { value: 5 } });
+    expect(wrapper.find('Button').prop('disabled')).toBeFalsy();
   });
 });
