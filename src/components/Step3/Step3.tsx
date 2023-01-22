@@ -96,7 +96,7 @@ const Step3: React.FC<Props> = ({
   };
 
   const renderSelect = (dish: SelectedDish, idx: number) => (
-    <div key={idx}>
+    <div key={idx} className="selected-dishes">
       <Form.Item>
         <Row gutter={16}>
           <Col className="gutter-row" span={8}>
@@ -138,7 +138,7 @@ const Step3: React.FC<Props> = ({
             {
               selectedDishes.length > 1 && (
                 <div className="remove-padding">
-                  <Button icon={<DeleteOutlined />} onClick={() => handleRemoveClick(idx)}></Button>
+                  <Button className="remove" icon={<DeleteOutlined />} onClick={() => handleRemoveClick(idx)}></Button>
                 </div>
               )
             }
@@ -149,13 +149,14 @@ const Step3: React.FC<Props> = ({
   );
 
   return (
-    <Form className="global-step step3" onFinish={handleSubmit}>
+    <Form className="global-step step3" id="ant-form3" onFinish={handleSubmit}>
       <h3 className="step3-h3">
         Select dishes for {selectedMeal} at {selectedRestaurant?.restaurant}:
       </h3>
       <div>
         {selectedDishes.map((dish, idx) => renderSelect(dish, idx))}
         <Button
+          id="add3"
           icon={<PlusOutlined />}
           disabled={selectedDishes.length >= availableDishesForSelection.length}
           onClick={handleAddClick}
@@ -180,7 +181,7 @@ const Step3: React.FC<Props> = ({
           <span>/ Min: {minServings} / Max: 10</span>
         </Tooltip>
       </p>
-      <Button className="global-previous" onClick={onBack}>
+      <Button id="back3" className="global-previous" onClick={onBack}>
         Previous
       </Button>
       <Button
